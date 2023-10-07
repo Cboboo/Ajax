@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        window.onload=function () {
+            document.getElementById(`btn`).onclick=function (){
+                var xhr = new XMLHttpRequest()
+
+                xhr.onreadystatechange=function () {
+                    if(this.readyState===4){
+                        if(this.status===200){
+                            console.log(this.responseText)
+                            document.getElementById('mydiv').innerHTML=this.responseText
+                        }else {
+                            alert(this.status)
+                        }
+                    }
+                }
+                xhr.open('GET','/ajax/ajax_get',true)
+                xhr.send()
+            }
+        }
+    </script>
+</head>
+<body>
+<input type="button" value="发请求" id="btn">
+
+<div id="mydiv"></div>
+</body>
+</html>

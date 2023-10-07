@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>省市联动</title>
+    <script type="text/javascript" src="/ajax_04/js/JQuery.js"></script>
+    <script type="text/javascript">
+        $(function (){
+            $.ajax({
+                type:"get",
+                url:"/ajax_04/listcity",
+                data:"t="+new Date().getTime(),
+                async:true,
+                success:function (jsonArr) {
+                    var html="<option value=''>--请选择省份--</option>"
+                    for (let i = 0; i < jsonArr.length; i++) {
+                        let city = jsonArr[i];
+                        html+="<option value='"+city.code+"'>"+city.name+"</option>"
+                    }
+                    $("#province").html(html)
+                }
+            })
+
+
+            $("#province").change(function () {
+                $.ajax({
+                    type:"get",
+                    url:"/ajax_04/listcity",
+                    data:"t="+new Date().getTime()+"&pcode="+this.value,
+                    async:true,
+                    success:function (jsonArr) {
+                        var html="<option value=''>--请选择市--</option>"
+                        for (let i = 0; i < jsonArr.length; i++) {
+                            let city = jsonArr[i];
+                            html+="<option value='"+city.code+"'>"+city.name+"</option>"
+                        }
+                        $("#city").html(html)
+                    }
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+<select id="province">
+
+</select>
+
+<select id="city">
+
+</select>
+</body>
+</html>

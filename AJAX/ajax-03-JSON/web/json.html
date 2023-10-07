@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>利用JSON传输数据，动态显示学生列表</title>
+
+    <script type="text/javascript">
+        window.onload=function (){
+            document.getElementById("btn").onclick=function (){
+                var xhr = new XMLHttpRequest()
+                xhr.onreadystatechange=function () {
+                    if(this.readyState==4){
+                        if(this.status==200){
+                            var stus = JSON.parse(this.responseText)
+                            console.log(stus)
+                            var html=""
+                            for (var i = 0; i < stus.length; i++) {
+                                var stu = stus[i]
+                                html+="<tr>"
+                                html+="<td>"+(i+1)+"</td>"
+                                html+="<td>"+stu.name+"</td>"
+                                html+="<td>"+stu.gender+"</td>"
+                                html+="<td>"+stu.address+"</td>"
+                                html+="</tr>"
+                            }
+                            document.getElementById("stubody").innerHTML=html
+                        }else {
+                            alert(this.status)
+                        }
+                    }
+                }
+                xhr.open("GET","/ajax_03/list",true)
+                xhr.send()
+            }
+        }
+    </script>
+</head>
+<body>
+<input type="button" value="显示学生列表" id="btn">
+<table width="50%" border="1px">
+    <tr>
+        <th>序号</th>
+        <th>姓名</th>
+        <th>性别</th>
+        <th>家庭住址</th>
+    </tr>
+    <tbody id="stubody">
+
+    </tbody>
+</table>
+</body>
+</html>

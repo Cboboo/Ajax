@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ajax post请求模拟用户名验证</title>
+    <script type="text/javascript">
+        window.onload=function () {
+            document.getElementById('username').onfocus=function (){
+                document.getElementById('msg').innerHTML=''
+            }
+            document.getElementById('username').onblur=function () {
+                var xhr = new XMLHttpRequest()
+                xhr.onreadystatechange=function () {
+                    if(this.readyState===4){
+                        if(this.status===200){
+                            document.getElementById('msg').innerHTML=this.responseText
+                        }
+                    }
+                }
+                xhr.open('post','/ajax_02/verify',true)
+                xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
+                var username = document.getElementById('username').value
+                xhr.send("username="+username)
+            }
+        }
+    </script>
+</head>
+<body>
+用户名：<input type="text" id="username">
+<span id="msg"></span>
+
+</body>
+</html>

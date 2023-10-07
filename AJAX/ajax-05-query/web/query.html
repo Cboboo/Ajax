@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax实现搜索联想和自动补全</title>
+    <style>
+        .query{
+            width: 300px;
+            height: 20px;
+            padding: 5px;
+            font-size: 20px;
+        }
+        .data{
+            width: 312px;
+            background-color: rgb(255, 255, 255);
+            display: none;
+        }
+        .data p{
+            width: 305px;
+            font-size: 20px;
+            padding: 5px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+        .data p:hover{
+            cursor: pointer;
+            background-color: rgb(245, 246, 249);
+            color: rgb(49, 94, 251);
+        }
+    </style>
+
+    <script type="text/javascript">
+        window.onload=function () {
+            document.getElementById("text").onkeyup=function () {
+                if(this.value==""){
+                    document.getElementById("datadiv").style.display="none"
+                }else{
+                    let xhr = new XMLHttpRequest()
+                    xhr.onreadystatechange=function () {
+                        if(this.readyState==4){
+                            if(this.status==200){
+                                let datas = JSON.parse(this.responseText)
+                                let html = ""
+                                for (let i = 0; i < datas.length; i++) {
+                                    let data = datas[i]
+                                    html+="<p onclick='fill(\""+data.content+"\")'>"+data.content+"</p>"
+                                }
+                                document.getElementById("datadiv").innerHTML=html
+                                document.getElementById("datadiv").style.display="block"
+                            }
+                        }
+                    }
+                    xhr.open("GET","/ajax_05/query?t="+new Date().getTime()+"&text="+this.value,true)
+                    xhr.send()
+                }
+            }
+        }
+        function fill(content) {
+            document.getElementById("text").value=content
+            document.getElementById("datadiv").style.display="none"
+        }
+    </script>
+</head>
+<body>
+<input type="text" id="text" class="query">
+<div id="datadiv" class="data">
+
+</div>
+</body>
+</html>
